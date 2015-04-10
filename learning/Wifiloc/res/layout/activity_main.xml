@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/set_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="set_home"
+        android:text="Set Home" />
+
+    <TextView
+        android:id="@+id/current"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/calc_tc"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/set_home"
+        android:layout_toLeftOf="@+id/home_vector" />
+
+    <TextView
+        android:id="@+id/home_vector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/current"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/current"
+        android:text="Home Vector"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scan"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Am Home" 
+        android:onClick="at_home"/>
+
+    <Button
+        android:id="@+id/calc_tc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/scan"
+        android:layout_alignLeft="@+id/current"
+        android:layout_alignRight="@+id/home_vector"
+        android:onClick="calc_tc"
+        android:text="Calculate" />
+
+    <Button
+        android:id="@+id/scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_alignLeft="@+id/calc_tc"
+        android:layout_alignRight="@+id/calc_tc"
+        android:onClick="getWifiSignals"
+        android:text="Scan" />
+
+</RelativeLayout>
