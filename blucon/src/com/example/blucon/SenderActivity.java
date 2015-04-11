@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -28,6 +29,7 @@ public class SenderActivity extends Activity{
 	public String[] paired;
 	private ConnectedThread read_write;
 	private EditText message;
+	TextView textMessage;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class SenderActivity extends Activity{
 		paired = new String[10];
 		
 		listView = (ListView) findViewById(R.id.listView1);
+		textMessage = (TextView) findViewById(R.id.textViewMessage);
 		listView.setAdapter(mArrayAdapter);
 		message = (EditText) findViewById(R.id.text);
 		//this.setListAdapter(mArrayAdapter);
@@ -89,12 +92,15 @@ public class SenderActivity extends Activity{
 	
 	private void manageConnectedSocket(BluetoothSocket mSocket){
 		Toast.makeText(getBaseContext(), "Ready to send messages", Toast.LENGTH_SHORT).show();
-		read_write = new ConnectedThread(mSocket);
+		read_write = new ConnectedThread(mSocket, this);
 	}
 	
 	public void send(View view){
 		String inputMessage = message.getText().toString();
 		read_write.write(inputMessage.getBytes());
+		message.setText("");
+		String mess = textMessage.getText().toString();
+		textMessage.setText(mess + "\n" + inputMessage);
 	}
 	
 	private void showPaired(){

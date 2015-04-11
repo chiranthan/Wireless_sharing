@@ -6,9 +6,11 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,14 +22,24 @@ public class RecieverActivity extends Activity{
 	private String NAME = "BluCon";
 	private String connection;
 	private TextView conn_status;
-	private Handler mHandler;
+	private static TextView incomingMessage;
+	static SharedPreferences sharedPreferences;
+	static String messageDisplay = "";
+	static RecieverActivity recAct;
+	
+	public static RecieverActivity getInstance(){
+		recAct = new RecieverActivity();   
+		return   recAct;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reciever);
 		conn_status = (TextView) findViewById(R.id.connection);
+		incomingMessage = (TextView) findViewById(R.id.incoming);
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         // Use a temporary object that is later assigned to mmServerSocket,
         // because mmServerSocket is final
         BluetoothServerSocket tmp = null;
@@ -73,7 +85,10 @@ public class RecieverActivity extends Activity{
     	    }
     	};
         thread.start();
-        conn_status.setText(connection);
+        
+        //messageRefresh();
+        
+//        conn_status.setText(connection);
 	}
 	public void manageConnectedSocket(BluetoothSocket socket){
 		//Toast toast = Toast.makeText(getApplicationContext(), "connection accepted", Toast.LENGTH_SHORT);
@@ -81,16 +96,16 @@ public class RecieverActivity extends Activity{
 		conn_status.post(new Runnable() {
             public void run() {
                 conn_status.setText("Connected");
-                Toast.makeText(getBaseContext(), "Ready to recieve messages", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(), "Ready to recieve messages", Toast.LENGTH_LONG).show();
             }
         });
 		
-		ConnectedThread read_write = new ConnectedThread(socket);
+		ConnectedThread read_write = new ConnectedThread(socket, this);
 		read_write.start();
 		//String buffer = new String();
 		//buffer = ;
 		
-		Handler mHandler = new Handler(Looper.getMainLooper());
+		//Handler mHandler = new Handler(Looper.getMainLooper());
 
 	}
  
@@ -100,4 +115,17 @@ public class RecieverActivity extends Activity{
             mmServerSocket.close();
         } catch (IOException e) { }
     }
+    
+    public static void messageRefresh() {
+		messageDisplay = sharedPreferences.getString("inMessage", "");
+		if (!messageDisplay.equals("")) {
+			incomingMessage.post(new Runnable() {
+				public void run() {
+					String x = incomingMessage.getText().toString();
+					incomingMessage.setText(x + "\n" + messageDisplay);
+				}
+			});
+		}
+	}
+    
 }

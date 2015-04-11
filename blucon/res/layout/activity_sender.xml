@@ -12,6 +12,14 @@
 
     </ListView>
 
+    <TextView
+        android:id="@+id/textViewMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.45"
+        android:text="" 
+        />
+
     <EditText
         android:id="@+id/text"
         android:layout_width="match_parent"

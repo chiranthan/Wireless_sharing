@@ -26,4 +26,14 @@
         android:onClick="role_reciever"
         android:text="reciever" />
 
+    <Button
+        android:id="@+id/buttonRelay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/sender"
+        android:layout_alignBottom="@+id/sender"
+        android:layout_centerHorizontal="true"
+        android:onClick="role_relay"        
+        android:text="Relay" />
+
 </RelativeLayout>

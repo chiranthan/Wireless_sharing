@@ -5,16 +5,27 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-import android.bluetooth.BluetoothSocket;
 
+
+
+import android.bluetooth.BluetoothSocket;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ConnectedThread extends Thread {
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
-    private String buff;
-    public ConnectedThread(BluetoothSocket socket) {
+    private String buff = "";
+    public Context appContext = null;
+    String userRole = "";
+    
+    
+	public ConnectedThread(BluetoothSocket socket, Context con) {
+		
+		appContext = con;
         mmSocket = socket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
@@ -23,6 +34,8 @@ public class ConnectedThread extends Thread {
         try {
             tmpIn = socket.getInputStream();
             tmpOut = socket.getOutputStream();
+            
+            
         } catch (IOException e) { }
  
         mmInStream = tmpIn;
@@ -32,7 +45,12 @@ public class ConnectedThread extends Thread {
     public void run() {
         byte[] buffer = new byte[1024];  // buffer store for the stream
         int bytes;// bytes returned from read()
-        
+        SharedPreferences sharedPreferences = PreferenceManager
+    			.getDefaultSharedPreferences(appContext);
+    	SharedPreferences.Editor editor = sharedPreferences.edit();
+
+		userRole = sharedPreferences.getString("role", "");
+    	
         // Keep listening to the InputStream until an exception occurs
         while (true) {
             try {
@@ -40,6 +58,15 @@ public class ConnectedThread extends Thread {
                 bytes = mmInStream.read(buffer);
                 buff = new String(buffer, 0, bytes);
                 Log.d("BLUECON SERVICE", new String(buffer, 0, bytes));
+                if (!buff.equals("")){
+        			editor.putString("inMessage", buff);
+        			editor.commit();
+        			if(userRole.equalsIgnoreCase("receiver")){
+               			RecieverActivity.messageRefresh();
+        			}else if(userRole.equalsIgnoreCase("relay")){
+               			RelayActivity.messageRefresh();
+        			}
+        		}
                 // Send the obtained bytes to the UI activity
                 //mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
             } catch (IOException e) {
