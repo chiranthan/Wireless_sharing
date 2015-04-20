@@ -227,18 +227,22 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f040019;
+        public static final int action_settings=0x7f04001d;
         public static final int alignBounds=0x7f040002;
         public static final int alignMargins=0x7f040003;
         public static final int bottom=0x7f040005;
-        public static final int button1=0x7f040016;
-        public static final int calc_tc=0x7f040014;
+        public static final int button1=0x7f040019;
+        public static final int button2=0x7f040017;
+        public static final int button3=0x7f04001a;
+        public static final int button4=0x7f04001b;
         public static final int center=0x7f04000c;
         public static final int center_horizontal=0x7f04000a;
         public static final int center_vertical=0x7f040008;
+        public static final int checkLoc=0x7f040016;
         public static final int clip_horizontal=0x7f04000f;
         public static final int clip_vertical=0x7f04000e;
-        public static final int current=0x7f040013;
+        public static final int currLoc=0x7f040018;
+        public static final int current=0x7f040012;
         public static final int end=0x7f040011;
         public static final int fill=0x7f04000d;
         public static final int fill_horizontal=0x7f04000b;
@@ -247,10 +251,10 @@ containing a value of this type.
         public static final int horizontal=0x7f040000;
         public static final int left=0x7f040006;
         public static final int right=0x7f040007;
-        public static final int scan=0x7f040017;
-        public static final int set_home=0x7f040012;
+        public static final int scan=0x7f040013;
+        public static final int set_home=0x7f040014;
         public static final int start=0x7f040010;
-        public static final int textStatus=0x7f040018;
+        public static final int textStatus=0x7f04001c;
         public static final int top=0x7f040004;
         public static final int vertical=0x7f040001;
     }
