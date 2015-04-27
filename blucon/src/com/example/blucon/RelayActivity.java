@@ -1,6 +1,9 @@
 package com.example.blucon;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,21 +37,12 @@ public class RelayActivity extends Activity {
 	private static final UUID MY_UUID = UUID.fromString("0000110E-0000-1000-8000-00805F9B34FB");
 	private String NAME = "BluCon";
 	private TextView conn_status_relay;
-//	private static TextView incomingMessageRelay;
 	static SharedPreferences sharedPreferences;
 	static String messageDisplayRelay = "";
-//	static boolean relayMessageNow = false;
-	
 	private ArrayAdapter<String> mArrayAdapter;
 	private static ListView listViewRelay;
 	public String[] pairedRelay;
-	private ConnectedThread read_write_relay;
-	
-	private EditText message;
-	TextView textMessage;
-	
-	Button forwardMessage;
-	
+	private static ConnectedThread read_write_relay;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +65,7 @@ public class RelayActivity extends Activity {
 		pairedRelay = new String[10];
 		
 		listViewRelay = (ListView) findViewById(R.id.listViewRelay);
-		textMessage = (TextView) findViewById(R.id.textViewMessage);
 		listViewRelay.setAdapter(mArrayAdapter);
-		message = (EditText) findViewById(R.id.text);
 		
 		
 		if (mBluetoothAdapterRelay == null) {
@@ -136,20 +128,6 @@ public class RelayActivity extends Activity {
         } catch (IOException e) { }
     }
     
-    public static void messageRefresh() {
-		messageDisplayRelay = sharedPreferences.getString("inMessage", "");
-		if (!messageDisplayRelay.equals("")) {
-			
-//			relayMessageNow = true;
-			/*incomingMessageRelay.post(new Runnable() {
-				public void run() {
-					String x = incomingMessageRelay.getText().toString();
-					incomingMessageRelay.setText(x + "\n" + messageDisplayRelay);
-				}
-			});*/
-		}
-	}
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -202,6 +180,7 @@ public class RelayActivity extends Activity {
 		conn_status_relay.post(new Runnable() {
             public void run() {
                 conn_status_relay.setText("Connected");
+        		
                 //Toast.makeText(getBaseContext(), "Ready to recieve messages", Toast.LENGTH_LONG).show();
             }
         });
@@ -210,32 +189,13 @@ public class RelayActivity extends Activity {
 		read_write.start();
 		//String buffer = new String();
 		//buffer = ;
-		
 		//Handler mHandler = new Handler(Looper.getMainLooper());
-
 	}
 	
 	private void manageConnectedSocketRelaySender(BluetoothSocket mSocket){
 		Toast.makeText(getBaseContext(), "Ready to send messages", Toast.LENGTH_SHORT).show();
 		read_write_relay = new ConnectedThread(mSocket, this);
 	}
-	
-	public void sendRelay(View view){
-		if (!messageDisplayRelay.equalsIgnoreCase("")){
-			String inputMessage = messageDisplayRelay;
-			read_write_relay.write(inputMessage.getBytes());
-		}else {
-			Toast toast;
-			toast = Toast.makeText(getBaseContext(), "No Incoming Message", Toast.LENGTH_SHORT);
-			toast.show();
-		}
-		
-
-		
-/*		message.setText("");
-		String mess = textMessage.getText().toString();
-		textMessage.setText(mess + "\n" + inputMessage);
-*/	}
 	
 	private void showPaired(){
 		Set<BluetoothDevice> pairedDevices = mBluetoothAdapterRelay.getBondedDevices();
@@ -252,6 +212,10 @@ public class RelayActivity extends Activity {
 		}
 	}
 	
-	
-	
+	public static void messageRefresh(byte[] messageBytes) {
+		int bytesRead = 0;
+		if ((bytesRead = messageBytes.length) != -1) {
+			read_write_relay.write(messageBytes);
+		}
+	}
 }

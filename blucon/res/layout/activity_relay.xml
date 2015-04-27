@@ -12,8 +12,8 @@
         android:id="@+id/listViewRelay"
         android:layout_width="match_parent"
         android:layout_height="84dp"
-        android:layout_above="@+id/buttonRelayForward"
         android:layout_alignLeft="@+id/textView1"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/textViewRelaySenderSide"
         android:layout_weight="0.45" >
 
@@ -48,14 +48,14 @@
         android:layout_marginTop="26dp"
         android:text="Waiting Connection from Sender" />
 
-    <Button
-        android:id="@+id/buttonRelayForward"
+    <TextView
+        android:id="@+id/textViewDisplayMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Forward Message" 
-        android:onClick="sendRelay"
-        />
+        android:layout_above="@+id/textViewRelaySenderSide"
+        android:layout_alignLeft="@+id/textViewRelaySenderSide"
+        android:layout_marginBottom="36dp"
+        android:textColor="#FF0000"
+        android:text="Please Connect to the Receiver from the below list" />
 
 </RelativeLayout>
