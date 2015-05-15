@@ -20,6 +20,14 @@
         android:textColor="#FF0000"
         android:textSize="20dp" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fetch Files List"
+        android:onClick="fetchListOfItem"
+         />
+
     <TextView
         android:id="@+id/incoming"
         android:layout_width="wrap_content"
@@ -31,7 +39,7 @@
         android:id="@+id/listViewFiles"
         android:layout_width="wrap_content"
         android:layout_height="163dp"
-        android:layout_weight="0.75" >
+        android:layout_weight="0.68" >
     </ListView>
 
     <TextView

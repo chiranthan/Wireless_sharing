@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import android.app.Activity;
@@ -50,8 +51,19 @@ public class RecieverActivity extends Activity{
 	
 	static TextView fileLength;
 	
-	
+    public static	DataAccess filesData = new DataAccess(ApplicationContext.getContext());
+    
 	AudioManager audioManager;
+
+
+	
+	
+    String[] owners = new String[55];
+	List<FilesList> listOfFilesList;
+	FilesList FilesListObject;
+	String concatedListOfFiles = "";
+	String[] listOfFiles;
+	
 
 	
 	public static RecieverActivity getInstance(){
@@ -73,12 +85,10 @@ public class RecieverActivity extends Activity{
 		mArrayAdapterFiles = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
 		listViewFiles = (ListView) findViewById(R.id.listViewFiles);
-		listViewFiles.setAdapter(mArrayAdapterFiles);
+
 		
 		
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		
-		
 		
 		
 		
@@ -141,13 +151,6 @@ public class RecieverActivity extends Activity{
         
 
         
-        while(true){
-			if(filesReceived)
-        		break;
-        	
-        }
-//        listViewFiles.setOnItemClickListener(new MyOnClickListener());
-        
         listViewFiles.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -156,28 +159,50 @@ public class RecieverActivity extends Activity{
 				String text = parent.getItemAtPosition(position).toString().trim();
 				read_write.writeFile(text.getBytes());
 				read_write.start();
-				
 			}
 		});
         
         
+        
+        
+        populateOwnersList();
+        
+		filesData.open();
+		
+		for(int i = 0; i < owners.length; i++){
+			listOfFilesList = filesData.getOwnerFiles(owners[i]);
+			int a = listOfFilesList.size();
+			for(int j = 0; j < a; j++){
+				FilesListObject = listOfFilesList.get(j);
+				concatedListOfFiles = FilesListObject.getName() + ",";
+			}
+		}
+		
+		listOfFiles = concatedListOfFiles.split(",");
+		
+		int nLength = listOfFiles.length;
+		
+		for (int i = 1; i < nLength; i++ ) {
+	        mArrayAdapterFiles.add(listOfFiles[i]);
+	    }
+		
         //messageRefresh();
         
 //        conn_status.setText(connection);
 	}
 	
-	private class MyOnClickListener implements OnItemClickListener {
-
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			// TODO Auto-generated method stub
-			String text = arg0.getItemAtPosition(arg2).toString().trim();
-			read_write.writeFile(text.getBytes());
-			read_write.start();
-		}
+	public void fetchListOfItem(View v){
+		listViewFiles.setAdapter(mArrayAdapterFiles);
 	}
 	
+	public void populateOwnersList()
+	{
+		// Fetch the list of Currently Available Owners from the Database
+		// Current Example List
+		owners[0] = "Galaxy Nexus";
+		owners[1] = "Galaxy Nexus 2";
+		owners[2] = "Karan's Droid";
+	}
 	
 	public void fetchFileManageSocket(BluetoothSocket socket) {
 		// TODO Auto-generated method stub
@@ -297,10 +322,31 @@ public class RecieverActivity extends Activity{
 		
 		int nLength = n.length;
 				
+		
+		// Add Files to database
+		
+		// Get Connected Owner Bluetooth ID
+		
+		
+		// Get device names from the Bluetooth ID
+		//BluetoothDevice device
+		//device.getName()
+		
+	
+		//Fetched BluetoothID name
+		// Connected Bluetooth Device
+		String OwnerBlueToothID = "Galaxy Nexus";
+		
+		// New Music Files added to the Database
 		for (int i = 1; i < nLength; i++ ) {
-	        mArrayAdapterFiles.add(n[i]);
+			
+			boolean x = filesData.addNewFile(n[i],OwnerBlueToothID);
+			if(x){
+		        mArrayAdapterFiles.add(n[i]);
+			}else {
+				// Nothing the files already in the listView
+			}
 	    }
-
 		filesReceived = true;
 	}
 }

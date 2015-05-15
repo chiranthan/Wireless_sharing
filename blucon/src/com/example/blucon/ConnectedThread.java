@@ -108,6 +108,16 @@ public class ConnectedThread extends Thread {
            				}
            				mmInStream.close();
            			}else if(userRole.equalsIgnoreCase("relay")){
+           				
+           				
+           				while((bytes = mmInStream.read(buffer)) != -1){
+           					RelayActivity.messageRefresh(buffer);
+           				}
+           				
+           				while((bytes = mmInStream.read(buffer)) != -1){
+           					RelayActivity.messageRefresh(buffer);
+           				}
+           				
            				while((bytes = mmInStream.read(buffer)) != -1){
            					RelayActivity.messageRefresh(buffer);
            				}

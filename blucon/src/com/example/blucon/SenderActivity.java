@@ -234,9 +234,6 @@ public class SenderActivity extends Activity{
 		return fileNames;
 	}
 	
-	
-	
-	
 	private void showPaired(){
 		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 		// If there are paired devices
@@ -358,7 +355,6 @@ public class SenderActivity extends Activity{
 	    	    					bytesSent.setText("Number of Bytes Sent = " + megabytes);
 	    						}
 	    					});
-	    					
 	    				}
 	    			} catch (IOException e) {
 	    				// TODO Auto-generated catch block

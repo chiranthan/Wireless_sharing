@@ -118,7 +118,6 @@ public class RelayActivity extends Activity {
     	    }
     	};
         thread.start();
-		
 	}
 	
     /** Will cancel the listening socket, and cause the thread to finish */
@@ -147,7 +146,6 @@ public class RelayActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
 	
 	@SuppressLint("NewApi")
 	protected void createSocket(String devAddr){
