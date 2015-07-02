@@ -14,23 +14,28 @@ import android.util.Log;
 
 /** Helper to the database, manages versions and creation */
 public class DataSQLHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 1;
 	public static String PackageName = "com.example.blucon";
     //The Android's default system path of your application database.
-    private static String DB_PATH = Environment.getDataDirectory()+"/data/" + PackageName + "/databases/";
-    private SQLiteDatabase myDataBase;
-    private static String DB_NAME = "Files.sqlite";
-    public static String MusicFilesList_Table = "MusicFiles";
-    public static String Routing_Table = "RoutingTable";    
-    private final Context myContext;
+    public static String DB_PATH = Environment.getDataDirectory()+"/data/" + PackageName + "/databases/";
+    public SQLiteDatabase myDataBase;
+    public static String DB_NAME = "blucon.sqlite";
+    public static String MusicFilesList_Table = "music";
+    public static String Routing_Table = "network";
+    public final Context myContext;
 	public static final String DB_FULL_PATH = DB_PATH + DB_NAME;
-	private static DataSQLHelper mInstance;
+	public static DataSQLHelper mInstance;
+	public SQLiteDatabase db;
 	
 	public DataSQLHelper(Context context) {
 		super(context, DB_NAME, null, DATABASE_VERSION);
 		this.myContext = context;
 	}
 
+	public SQLiteDatabase openDB(){
+		db = this.getWritableDatabase();
+		return db;
+	}
 	
 	public static DataSQLHelper getInstance() {
         /** 
@@ -110,7 +115,8 @@ public class DataSQLHelper extends SQLiteOpenHelper {
  
     	//transfer bytes from the inputfile to the outputfile
     	byte[] buffer = new byte[1024];
-    	int length;
+    	@SuppressWarnings("unused")
+		int length;
     	
     	InputStream myInput = myContext.getAssets().open(DB_NAME);
     	while ((length = myInput.read(buffer))>0){

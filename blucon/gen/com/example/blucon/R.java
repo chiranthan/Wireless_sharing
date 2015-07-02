@@ -22,68 +22,53 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int file=0x7f020000;
-        public static final int folder=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int play=0x7f020003;
+        public static final int ic_launcher=0x7f020000;
+        public static final int pause=0x7f020001;
+        public static final int play=0x7f020002;
+        public static final int stop=0x7f020003;
     }
     public static final class id {
-        public static final int action_settings=0x7f080022;
+        public static final int action_help=0x7f080014;
+        public static final int action_settings=0x7f080013;
         public static final int button1=0x7f080008;
-        public static final int button2=0x7f080005;
-        public static final int button3=0x7f080006;
-        public static final int button4=0x7f080009;
-        public static final int button5=0x7f08000a;
-        public static final int buttonRelay=0x7f08000d;
-        public static final int checkLoc=0x7f080004;
-        public static final int connection=0x7f08000f;
-        public static final int currLoc=0x7f080007;
-        public static final int current=0x7f080000;
-        public static final int file_picker_image=0x7f080020;
-        public static final int file_picker_text=0x7f080021;
-        public static final int home_vector=0x7f080003;
-        public static final int imageButton1=0x7f080015;
-        public static final int incoming=0x7f080011;
-        public static final int layout1=0x7f08000e;
-        public static final int listView1=0x7f080019;
-        public static final int listViewFiles=0x7f080012;
-        public static final int listViewRelay=0x7f080016;
-        public static final int reciever=0x7f08000c;
-        public static final int scan=0x7f080001;
-        public static final int send=0x7f08001d;
-        public static final int sender=0x7f08000b;
-        public static final int set_home=0x7f080002;
-        public static final int textView1=0x7f080014;
-        public static final int textView2=0x7f08001c;
-        public static final int textViewBytesSent=0x7f08001f;
-        public static final int textViewDisplayMessage=0x7f08001b;
-        public static final int textViewFileLength=0x7f080013;
-        public static final int textViewFilePath=0x7f08001e;
-        public static final int textViewFileReady=0x7f080010;
-        public static final int textViewRelayConnection=0x7f08001a;
-        public static final int textViewRelayReceiverSide=0x7f080018;
-        public static final int textViewRelaySenderSide=0x7f080017;
+        public static final int button2=0x7f080007;
+        public static final int imageView1=0x7f080012;
+        public static final int imagebuttonpause=0x7f08000f;
+        public static final int imagebuttonplay=0x7f08000e;
+        public static final int innerlayout1=0x7f08000b;
+        public static final int innerlayout2=0x7f08000d;
+        public static final int layout1=0x7f08000a;
+        public static final int listViewAvailableDevices=0x7f080006;
+        public static final int listViewFiles=0x7f08000c;
+        public static final int textView1=0x7f080011;
+        public static final int textView2=0x7f080003;
+        public static final int textView3=0x7f080004;
+        public static final int textViewConnectedTo=0x7f080005;
+        public static final int textViewDownload=0x7f080010;
+        public static final int textViewIncomingConnection=0x7f080009;
+        public static final int textViewSayRelay=0x7f080001;
+        public static final int textViewSaySender=0x7f080002;
+        public static final int webViewHelp=0x7f080000;
     }
     public static final class layout {
-        public static final int activity_browse_folder=0x7f030000;
-        public static final int activity_learn=0x7f030001;
-        public static final int activity_main=0x7f030002;
-        public static final int activity_reciever=0x7f030003;
-        public static final int activity_relay=0x7f030004;
-        public static final int activity_sender=0x7f030005;
-        public static final int empty_view=0x7f030006;
-        public static final int list_item=0x7f030007;
+        public static final int activity_help=0x7f030000;
+        public static final int activity_home=0x7f030001;
+        public static final int activity_music_files=0x7f030002;
+        public static final int activity_splash=0x7f030003;
     }
     public static final class menu {
-        public static final int main=0x7f070000;
-        public static final int relay=0x7f070001;
+        public static final int help=0x7f070000;
+        public static final int home=0x7f070001;
+        public static final int music_files=0x7f070002;
+        public static final int splash=0x7f070003;
     }
     public static final class string {
-        public static final int action_settings=0x7f050001;
+        public static final int action_settings=0x7f050002;
         public static final int app_name=0x7f050000;
-        public static final int hello_world=0x7f050002;
-        public static final int title_activity_browse_folder=0x7f050004;
-        public static final int title_activity_relay=0x7f050003;
+        public static final int hello_world=0x7f050001;
+        public static final int title_activity_help=0x7f050005;
+        public static final int title_activity_home=0x7f050003;
+        public static final int title_activity_music_files=0x7f050004;
     }
     public static final class style {
         /** 

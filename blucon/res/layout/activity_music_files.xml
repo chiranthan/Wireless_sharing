@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+    
+    <LinearLayout 
+    android:id="@+id/innerlayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+        
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="fetchListOfItem"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:text="Fetch Music Files"
+        
+         />
+
+    <ListView
+        android:id="@+id/listViewFiles"
+        android:layout_width="match_parent"
+        android:layout_height="300sp"
+        android:paddingBottom="10sp"
+        android:paddingTop="10sp" >
+
+    </ListView>
+        
+        
+    </LinearLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/innerlayout2"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        
+        >
+        
+        <ImageButton 
+	        android:id="@+id/imagebuttonplay"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="10sp"
+	        android:paddingBottom="10sp"
+	        android:src="@drawable/play"
+            android:onClick="playMusicButtonClick"
+            />
+
+        <ImageButton
+            android:id="@+id/imagebuttonpause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:onClick="stopMusicButtonClick"
+            android:paddingBottom="10sp"
+            android:paddingTop="10sp"
+            android:src="@drawable/stop" />
+
+        <TextView
+            android:id="@+id/textViewDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="TextView" />
+        
+    </RelativeLayout>
+
+</LinearLayout>
