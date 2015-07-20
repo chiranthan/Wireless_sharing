@@ -166,11 +166,11 @@ public class MusicFiles extends Activity {
 */		
 		String finalMessage = FilesHeader 
 				+ DelimeterHeader + currentDeviceName
-				+ DelimeterHeader + nextHopName
+				+ DelimeterHeader + ""
 				+ DelimeterHeader + messageStartDelimeterHeader + DelimeterHeader
 				+ "FetchFiles";
 
-		Home.read_write.write(finalMessage.getBytes());
+		Home.read_write.writeFetchMusicFiles(finalMessage.getBytes());
 		
 		  //Start of Thread
         Thread thread = new Thread(){
@@ -178,7 +178,7 @@ public class MusicFiles extends Activity {
     	    public void run() {
     	        // Keep listening until exception occurs or a socket is returned
 //    	        while (true) {
-    	        	Home.read_write.receiveFiles();
+    	        	Home.read_write.receiveIncomingListofFiles();
 //    	        }
     	    }
     	};
@@ -240,7 +240,7 @@ public class MusicFiles extends Activity {
 							+ text;
 					finalMessage = finalMessage.trim();
 					rl.setVisibility(View.VISIBLE);
-					Home.read_write.write(finalMessage.getBytes());
+					Home.read_write.writePlayThisMusic(finalMessage.getBytes());
 			        Thread thread = new Thread(){
 			    		@Override
 			    	    public void run() {

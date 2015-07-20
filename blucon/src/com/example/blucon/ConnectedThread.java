@@ -47,6 +47,8 @@ public class ConnectedThread extends Thread {
     }
 	
 	
+//  #2 Listen to incoming message till received.
+//	once the message is received, decide the receiver and forward it or act on it
 	
 	@SuppressWarnings("unused")
 	public void mainPageIncomingMessage(){
@@ -62,16 +64,9 @@ public class ConnectedThread extends Thread {
 			e.printStackTrace();
 		}
 	}
+
+//  Send the list of Music Files to the Receiver
 	
-/*    public void receiveFileName(byte[] fileName) {
-        int size = fileName.length;
-		byte[] sendingFileName = new byte[size];
-		for(int i = 0; i < size; i++){
-			sendingFileName[i] = fileName[i];
-		}
-		MainActivity.fileNameToBeSent(sendingFileName);
-    }
-*/    
 	public void writeFileNames(byte[] bytes) {
 		try {
 			mmOutStream.write(bytes);
@@ -81,30 +76,83 @@ public class ConnectedThread extends Thread {
 		}
 	}
 	
-//    Call this from the main activity to send data to the remote device 
+//  #2 Call this from the home activity to send data to the remote device 
+//	Forward message from relay to the next hop
 
-	public void write(byte[] bytes) {
+	public void writeForwardMessage(byte[] bytes) {
        try {
                mmOutStream.write(bytes);
        } catch (IOException e) { }
        
-   }
+	}
 	
-	public void receiveFiles() {
+	
+//	# 1 Receiver sending message to fetch music files from other devices
+	
+	public void writeFetchMusicFiles(byte[] bytes) {
+	       try {
+	               mmOutStream.write(bytes);
+	       } catch (IOException e) { }
+	       
+	   }
+
+//	Send Message to play the music file with music file name
+	public void writePlayThisMusic(byte[] bytes) {
+	       try {
+	               mmOutStream.write(bytes);
+	               
+	   /*        	int size = files.length;
+	       		byte[] sendingFileName = new byte[size];
+	       		for(int i = 0; i < size; i++){
+	       			sendingFileName[i] = files[i];
+	       		}
+	   */
+	       } catch (IOException e) { }
+	       
+	   }
+
+	
+//	Send File to be played 1024 bytes at a time
+	public void writeMusicFilePlayed(byte[] bytes) {
+	       try {
+	               mmOutStream.write(bytes);
+	       } catch (IOException e) { }
+	       
+	   }
+
+	
+//	Send database file bytes asked by the receiver
+	public void writeDatabaseFile(byte[] bytes) {
+	       try {
+	               mmOutStream.write(bytes);
+	       } catch (IOException e) { }
+	       
+	   }
+
+	
+	
+//	Send Message to fetch database
+	public void write(byte[] bytes) {
+	       try {
+	               mmOutStream.write(bytes);
+	       } catch (IOException e) { }
+	       
+	   }
+	
+//  Receiver listening to the incoming list of music files from other devices in the network
+	
+	public void receiveIncomingListofFiles() {
         try {
             byte[] files = new byte[9999];
 			mmInStream.read(files);
-/*        	int size = files.length;
-    		byte[] sendingFileName = new byte[size];
-    		for(int i = 0; i < size; i++){
-    			sendingFileName[i] = files[i];
-    		}
-*/			
 			MusicFiles.getAllFiles(files);
         } catch (IOException e) { }
         
     }
 
+//	Receiver listening to the incoming music files bytes requested by it
+//	Writing it down to the temporary file
+	
 	public void incomingMusicFile() {
 		// TODO Auto-generated method stub
         byte[] buffer = new byte[1024];  // buffer store for the stream
@@ -121,6 +169,8 @@ public class ConnectedThread extends Thread {
 		}
 	}
 	
+//	Not Defined
+//	
 	public void incomingDBFile() {
 		// TODO Auto-generated method stub
         byte[] buffer = new byte[1024];  // buffer store for the stream

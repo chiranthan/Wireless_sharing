@@ -57,6 +57,8 @@ public class Home extends Activity {
 	
 	static ConnectedThread read_write;
 	
+	static ConnectedThread read_write_musicfile;
+	
 	DataSQLHelper dbHelper;
 	
 	static Context context;
@@ -108,7 +110,7 @@ public class Home extends Activity {
 
 		filesData = new DataAccess(this);
 		
-		filesData.db = dbHelper.openDataBase();
+		filesData.db = dbHelper.getWritableDatabase();
 	
 //		dbHelper.close();
         
@@ -288,6 +290,30 @@ public class Home extends Activity {
     }
     
     
+    public static void createSocketMusicFile(String devAddr){
+		BluetoothSocket mSocket = null;
+		BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(devAddr);
+		Toast toast;
+		//toast = Toast.makeText(getBaseContext(), device.getName(), 1);
+		//toast.show();
+		try{
+			mSocket = device.createInsecureRfcommSocketToServiceRecord(MY_UUID);
+		}
+		catch(IOException e){
+			toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
+			toast.show();
+		}
+		try{
+			mSocket.connect();
+		}
+		catch(IOException closeException){ 
+			toast = Toast.makeText(context, closeException.toString(), Toast.LENGTH_SHORT);
+			toast.show();
+		}
+		read_write_musicfile = new ConnectedThread(mSocket, context);
+
+	}
+    
 	public static String createSocket(String devAddr){
 		BluetoothSocket mSocket = null;
 		BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(devAddr);
@@ -322,6 +348,26 @@ public class Home extends Activity {
 		
 		return name;
 		
+	}
+	
+	public static void closeSocket(String devAddr){
+		BluetoothSocket mSocket = null;
+		BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(devAddr);
+		Toast toast;
+		try{
+			mSocket = device.createInsecureRfcommSocketToServiceRecord(MY_UUID);
+		}
+		catch(IOException e){
+			toast = Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT);
+			toast.show();
+		}
+		try{
+			mSocket.close();
+		}
+		catch(IOException closeException){ 
+			toast = Toast.makeText(context, closeException.toString(), Toast.LENGTH_SHORT);
+			toast.show();
+		}
 	}
     
 	private void manageConnectedSocket(BluetoothSocket mSocket){
@@ -449,7 +495,7 @@ public class Home extends Activity {
 	    					for (int i = 0; i < 1024; ++i){
 	    						toBeSent[i] = i < 94 ? header[i] : b[i - 94];
 	    					}
-	    					read_write.write(toBeSent);
+	    					read_write.writeMusicFilePlayed(toBeSent);
 	    				}
 	    			} catch (IOException e) {
 	    				// TODO Auto-generated catch block
@@ -524,7 +570,7 @@ public class Home extends Activity {
 				    				int bsize = 1024;
 				    				byte[] b = new byte[bsize];
 				    				while ((bytesRead = is.read(b)) != -1) {
-				    					read_write.write(b);
+				    					read_write.writeDatabaseFile(b);
 				    				}
 				    			} catch (IOException e) {
 				    				// TODO Auto-generated catch block
@@ -537,16 +583,6 @@ public class Home extends Activity {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-				}else if(splitHeader[0].equals(FilesHeader)){
-					// Music files requested
-					String listOfMusicFiles = allFiles;
-					
-/*					String finalMessage = FilesHeader 
-							+ DelimeterHeader + MainActivity.currentDeviceName
-							+ DelimeterHeader + splitHeader[1]
-							+ DelimeterHeader + messageStartDelimeterHeader + DelimeterHeader
-							+ listOfMusicFiles;
-*/					read_write.writeFileNames(listOfMusicFiles.getBytes());
 				}else if(splitHeader[0].equals(PlayMusicFileHeader)){
 					// music file to be played requested
 					
@@ -569,32 +605,61 @@ public class Home extends Activity {
 					read_write.receiveFileName(finalMessage.getBytes());
 */				
 				}
-			} else {
-
+			}else if(splitHeader[2].equals(currentDeviceName)){
+				// List of Files Requested
+				if(splitHeader[0].equals(FilesHeader)){
+					// Music files requested
+					String listOfMusicFiles = allFiles;
+					
+//					createSocket(splitHeader[1]);
+					
+/*					String finalMessage = FilesHeader 
+							+ DelimeterHeader + MainActivity.currentDeviceName
+							+ DelimeterHeader + splitHeader[1]
+							+ DelimeterHeader + messageStartDelimeterHeader + DelimeterHeader
+							+ listOfMusicFiles;
+*/					read_write.writeFileNames(listOfMusicFiles.getBytes());
+				}
+				
+			}else {
 				// Relay part
 				// Get neighbour
 				
 				DataAccess fileData = new DataAccess(ApplicationContext.getContext());
-				
 				String[] relayNeighbourNames = fileData.getNeighbour(currentDeviceName);
-				
 				String nextHop = "";
-				
 //				Fetch receiver's name
-				
 				for(int i = 0; i < 2; i++){
 					if(!relayNeighbourNames[i].equals(splitHeader[1])){
 						nextHop = relayNeighbourNames[i];
 					}
 				}
-				
 				createSocket(nextHop);
-				
-				read_write.write(incomingMessage.getBytes());
-				
+				read_write.writeForwardMessage(incomingMessage.getBytes());
 				// Just Forward to whole message as it is
 				// mmOutStream.write(incomingMessage.getBytes());
-				
+				//Start of Thread
+				//
+				if(splitHeader[0].equals(PlayMusicFileHeader)){
+					createSocket(splitHeader[1]);
+			        Thread thread = new Thread(){
+			    		@Override
+			    	    public void run() {
+			    	        // Keep listening until exception occurs or a socket is returned
+							read_write_musicfile.mainPageIncomingMessage();
+			    	    }
+			    	};
+			        thread.start();
+				}else {
+			        Thread thread = new Thread(){
+			    		@Override
+			    	    public void run() {
+			    	        // Keep listening until exception occurs or a socket is returned
+	    	        		read_write.mainPageIncomingMessage();
+			    	    }
+			    	};
+			        thread.start();
+				}
 			}
 		}
 	}
