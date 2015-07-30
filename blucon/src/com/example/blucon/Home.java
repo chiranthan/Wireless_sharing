@@ -77,7 +77,7 @@ public class Home extends Activity {
 
 	// Useful in Settings menu
 	static String setSharedMusicFolder = "";
-    public DataAccess filesData;
+    public static DataAccess filesData;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,6 +109,8 @@ public class Home extends Activity {
 		}
 
 		filesData = new DataAccess(this);
+		
+//		filesData.db = dbHelper.getReadableDatabase();
 		
 		filesData.db = dbHelper.getWritableDatabase();
 	
@@ -681,7 +683,13 @@ public class Home extends Activity {
 		if (id == R.id.action_help) {
 			startActivity(new Intent(this, Help.class));
 			return true;
+		} else if (id == R.id.action_changedb) {
+			Intent i = new Intent(this, ChangeDB.class);
+			i.putExtra("currentMAC", currentDeviceName);
+			startActivity(i);
+			return true;
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 }

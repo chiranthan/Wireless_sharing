@@ -7,5 +7,6 @@
     <string name="title_activity_home">Home</string>
     <string name="title_activity_music_files">MusicFiles</string>
     <string name="title_activity_help">Help</string>
+    <string name="title_activity_change_db">Update Database</string>
 
 </resources>

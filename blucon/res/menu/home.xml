@@ -7,5 +7,11 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Help"/>
+    
+    <item
+        android:id="@+id/action_changedb"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="Change DB"/>
 
 </menu>

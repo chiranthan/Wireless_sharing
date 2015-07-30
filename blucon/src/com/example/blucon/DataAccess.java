@@ -15,6 +15,9 @@ public class DataAccess {
 	public static final String KEY_OWNER = "ownername";
 	public static final String KEY_FILENAME = "filename";
 	public static final String KEY_NEIGHBOUR = "neighbourname";
+	public static final String KEY_DESTINATION = "destination";
+	public static final String KEY_RELAY = "relay";
+	
 	static Context mContext;
 	
 	public DataAccess(Context context){
@@ -111,6 +114,67 @@ public class DataAccess {
 		return neighbourName;
 	}
 	
+	
+	public String getRoutingDBValues() {
+		String neighbourName = "";
+		try {
+			Cursor cursor = db.rawQuery("select * from " + DataSQLHelper.RoutingTable,null);
+			cursor.moveToFirst();
+			int i = 0;
+			while (!cursor.isAfterLast()){
+				neighbourName = neighbourName + cursor.getString(cursor.getColumnIndex(KEY_DESTINATION));
+				neighbourName = neighbourName + "," + cursor.getString(cursor.getColumnIndex(KEY_RELAY)) + ",";
+				cursor.moveToNext();
+				i++;
+			}
+			cursor.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return neighbourName;
+	}
+	
+	public boolean addRoutingDBValues(String des, String rel){
+		
+		// Check if Query shows no output
+//		Cursor cursor = db.rawQuery("select * from " + DataSQLHelper.RoutingTable,null);
+//		cursor.moveToFirst();
+//		int counter = 0;
+//		while (!cursor.isAfterLast()){
+//			counter++;
+//		}
+//		if(counter<3){
+			addValue(des, rel);
+//		}else {
+//			return false;
+//		}
+//		cursor.close();
+		return true;
+	}
+	
+	public void addValue(String filename, String ownerid){
+		ContentValues values = new ContentValues();
+		filename = filename.trim();
+		ownerid = ownerid.trim();
+		values.put(KEY_DESTINATION, filename);
+		values.put(KEY_RELAY, ownerid);
+		db.insert(DataSQLHelper.RoutingTable, null, values);
+//		db.close();
+	}
+	
+	public boolean deleteRoutingDBValues(String d, String r) {
+		try {
+			db.delete(DataSQLHelper.RoutingTable, KEY_DESTINATION + " = ? AND " + KEY_RELAY + " = ?", new String[] {d, r+""});
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	
 	public String getOwner(String fileName) {
 		Cursor cursor = db.rawQuery("select * from " + DataSQLHelper.MusicFilesList_Table + " where filename" + " = '"+ fileName +"'",null);
 		cursor.moveToFirst();
@@ -145,6 +209,7 @@ public class DataAccess {
 		values.put(KEY_FILENAME, filename);
 		values.put(KEY_OWNER, ownerid);
 		db.insert(DataSQLHelper.MusicFilesList_Table, null, values);
-//		db.close();
+		db.close();
 	}
+
 }

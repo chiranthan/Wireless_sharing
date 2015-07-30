@@ -22,6 +22,7 @@ public class DataSQLHelper extends SQLiteOpenHelper {
     public static String DB_NAME = "blucon.sqlite";
     public static String MusicFilesList_Table = "music";
     public static String Routing_Table = "network";
+    public static String RoutingTable = "routing";
     public final Context myContext;
 	public static final String DB_FULL_PATH = DB_PATH + DB_NAME;
 	public static DataSQLHelper mInstance;
